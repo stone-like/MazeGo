@@ -1,5 +1,7 @@
 package grid
 
+import "MazeGo/util"
+
 type Neighbors struct {
 	North *Cell
 	South *Cell
@@ -104,4 +106,21 @@ func (c *Cell) Linked(cell *Cell) bool {
 
 func (c *Cell) GetNeighbors() []*Cell {
 	return c.Neighbors.ToList()
+}
+
+func (c *Cell) GetRandomNeighbor() *Cell {
+
+	list := c.GetNeighbors()
+	index := util.CreateRandNum(len(list))
+	return list[index]
+}
+
+func (c *Cell) IndexOf(cells []*Cell) int {
+	for ind, cell := range cells {
+		if c == cell {
+			return ind
+		}
+	}
+
+	return -1
 }

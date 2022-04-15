@@ -16,6 +16,8 @@ const (
 const (
 	BinaryTree = "binaryTree"
 	SideWinder = "sidewinder"
+	Aldrous    = "aldrous"
+	Wilsons    = "wilsons"
 )
 
 func CreateGrid(gridType string, rowLen, colLen int) grid.Grid {
@@ -37,6 +39,10 @@ func GetCreator(creatorType string) creator.CreatFunc {
 		return creator.OnBinaryTree
 	case SideWinder:
 		return creator.OnSideWinder
+	case Aldrous:
+		return creator.OnAldousBroder
+	case Wilsons:
+		return creator.OnWilsons
 	default:
 		return creator.OnBinaryTree
 	}

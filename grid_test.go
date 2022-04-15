@@ -8,7 +8,7 @@ import (
 
 func TestGrid(t *testing.T) {
 
-	grid := Construct(25, 25, Color, SideWinder)
+	grid := Construct(25, 25, Color, Wilsons)
 
 	start := grid.GetCell(grid.Row()/2, grid.Col()/2)
 	distances := start.Distances()
