@@ -11,8 +11,11 @@ type DistanceGrid struct {
 }
 
 func NewDistanceGrid(rowLen, colLen int) *DistanceGrid {
+	grid := NewGrid(rowLen, colLen)
+	grid.SetCells(CreateCells(rowLen, colLen))
+	grid.ConfigureCells()
 	return &DistanceGrid{
-		NewGrid(rowLen, colLen),
+		grid,
 		nil,
 	}
 }
@@ -46,4 +49,12 @@ func (dg *DistanceGrid) getBackGroundColor(cell *Cell) color.Color {
 
 func (dg *DistanceGrid) GeneratePng(cellSize int) error {
 	return dg.ToPng(cellSize, dg.getBackGroundColor)
+}
+
+func (dg *DistanceGrid) GetRandomCell() *Cell {
+	return dg.CreateRandomCell()
+}
+
+func (dg *DistanceGrid) Size() int {
+	return dg.GetSize()
 }

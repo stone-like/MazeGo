@@ -7,21 +7,27 @@ import (
 )
 
 func TestGrid(t *testing.T) {
+	mask, _ := gr.NewMaskWithPng("maze_text.png")
+	option := NewOptions(MaskOp(mask))
 
-	grid := Construct(25, 25, Color, Wilsons)
-
-	start := grid.GetCell(grid.Row()/2, grid.Col()/2)
-	distances := start.Distances()
-
-	cg := grid.(*gr.ColorGrid)
-
-	cg.SetDistances(distances)
+	grid := Construct(mask.Row(), mask.Col(), Mask, RecurBackTrack, option)
 
 	fmt.Println(grid)
+	grid.GeneratePng(5)
 
-	cg.GeneratePng(100)
+	// option := NewOptions()
 
-	// err := grid.ToPng(100)
+	// grid := Construct(25, 25, Color, RecurBackTrack, option)
+
+	// start := grid.GetCell(grid.Row()/2, grid.Col()/2)
+	// distances := start.Distances()
+
+	// cg := grid.(*gr.ColorGrid)
+
+	// cg.SetDistances(distances)
+
 	// fmt.Println(grid)
-	// fmt.Println(err)
+
+	// cg.GeneratePng(100)
+
 }

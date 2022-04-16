@@ -7,8 +7,11 @@ type SimpleGrid struct {
 }
 
 func NewSimpleGrid(rowLen, colLen int) *SimpleGrid {
+	grid := NewGrid(rowLen, colLen)
+	grid.SetCells(CreateCells(rowLen, colLen))
+	grid.ConfigureCells()
 	return &SimpleGrid{
-		NewGrid(rowLen, colLen),
+		grid,
 	}
 }
 
@@ -26,4 +29,12 @@ func (sg *SimpleGrid) getBackGroundColor(cell *Cell) color.Color {
 
 func (sg *SimpleGrid) GeneratePng(cellSize int) error {
 	return sg.ToPng(cellSize, sg.getBackGroundColor)
+}
+
+func (sg *SimpleGrid) GetRandomCell() *Cell {
+	return sg.CreateRandomCell()
+}
+
+func (sg *SimpleGrid) Size() int {
+	return sg.GetSize()
 }

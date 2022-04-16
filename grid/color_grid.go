@@ -12,8 +12,13 @@ type ColorGrid struct {
 }
 
 func NewColorGrid(rowLen, colLen int) *ColorGrid {
+
+	grid := NewGrid(rowLen, colLen)
+	grid.SetCells(CreateCells(rowLen, colLen))
+
+	grid.ConfigureCells()
 	return &ColorGrid{
-		NewGrid(rowLen, colLen),
+		grid,
 		nil,
 		0,
 	}
@@ -54,4 +59,12 @@ func (cg *ColorGrid) getBackGroundColor(cell *Cell) color.Color {
 
 func (cg *ColorGrid) GeneratePng(cellSize int) error {
 	return cg.ToPng(cellSize, cg.getBackGroundColor)
+}
+
+func (cg *ColorGrid) GetRandomCell() *Cell {
+	return cg.CreateRandomCell()
+}
+
+func (cg *ColorGrid) Size() int {
+	return cg.GetSize()
 }

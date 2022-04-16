@@ -9,23 +9,6 @@ type Neighbors struct {
 	West  *Cell
 }
 
-func (n *Neighbors) ToList() []*Cell {
-	var temp []*Cell
-	if n.North != nil {
-		temp = append(temp, n.North)
-	}
-	if n.South != nil {
-		temp = append(temp, n.South)
-	}
-	if n.East != nil {
-		temp = append(temp, n.East)
-	}
-	if n.West != nil {
-		temp = append(temp, n.West)
-	}
-	return temp
-}
-
 type Cell struct {
 	Row       int
 	Column    int
@@ -104,8 +87,31 @@ func (c *Cell) Linked(cell *Cell) bool {
 	return exists
 }
 
+func (n *Neighbors) ToList(fn func(c *Cell) bool) []*Cell {
+	var temp []*Cell
+	if n.North != nil && fn(n.North) {
+		temp = append(temp, n.North)
+	}
+	if n.South != nil && fn(n.South) {
+		temp = append(temp, n.South)
+	}
+	if n.East != nil && fn(n.East) {
+		temp = append(temp, n.East)
+	}
+	if n.West != nil && fn(n.West) {
+		temp = append(temp, n.West)
+	}
+	return temp
+}
+
 func (c *Cell) GetNeighbors() []*Cell {
-	return c.Neighbors.ToList()
+	return c.Neighbors.ToList(func(c *Cell) bool {
+		return true
+	})
+}
+
+func (c *Cell) GetFilteredNeighbors(fn func(c *Cell) bool) []*Cell {
+	return c.Neighbors.ToList(fn)
 }
 
 func (c *Cell) GetRandomNeighbor() *Cell {

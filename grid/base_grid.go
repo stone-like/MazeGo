@@ -26,10 +26,11 @@ func NewGrid(rowLen, colLen int) *BaseGrid {
 	g := &BaseGrid{
 		RowLen: rowLen,
 		ColLen: colLen,
-		Cells:  setCells(rowLen, colLen),
 	}
 
-	g.configureCells()
+	// g.SetCells(CreateCells(rowLen, colLen))
+
+	// g.ConfigureCells()
 
 	return g
 
@@ -91,6 +92,11 @@ func (g *BaseGrid) ToPng(cellSize int, getBackGroundColor func(cell *Cell) color
 
 	for _, mode := range modes {
 		for cell := range g.EachCell() {
+
+			//maskの関係でcellがnilのことがあるのでnilの場合は描画せず
+			if cell == nil {
+				continue
+			}
 			g.DrawGrid(mode, cell, img, cellSize, getBackGroundColor)
 		}
 	}
@@ -166,6 +172,7 @@ func (g *BaseGrid) GetCell(r, c int) *Cell {
 		return nil
 	}
 
+	//maskによってnilが入っているcellをつかむこともあるので注意
 	return g.Cells[r][c]
 }
 
@@ -185,8 +192,12 @@ func (g *BaseGrid) EachCell() chan *Cell {
 	return c
 }
 
-func (g *BaseGrid) configureCells() {
+func (g *BaseGrid) ConfigureCells() {
 	for cell := range g.EachCell() {
+		//maskでnilかもしれないので
+		if cell == nil {
+			continue
+		}
 		row, col := cell.Row, cell.Column
 
 		cell.Neighbors.North = g.GetCell(row-1, col)
@@ -197,7 +208,11 @@ func (g *BaseGrid) configureCells() {
 	}
 }
 
-func setCells(rowLen, colLen int) [][]*Cell {
+func (g *BaseGrid) SetCells(cells [][]*Cell) {
+	g.Cells = cells
+}
+
+func CreateCells(rowLen, colLen int) [][]*Cell {
 	cells := make([][]*Cell, rowLen)
 
 	for i := 0; i < rowLen; i++ {
@@ -213,7 +228,7 @@ func setCells(rowLen, colLen int) [][]*Cell {
 	return cells
 }
 
-func (g *BaseGrid) GetRandomCell() *Cell {
+func (g *BaseGrid) CreateRandomCell() *Cell {
 
 	row := util.CreateRandNum(g.RowLen)
 	col := util.CreateRandNum(g.ColLen)
@@ -221,6 +236,14 @@ func (g *BaseGrid) GetRandomCell() *Cell {
 	return g.Cells[row][col]
 }
 
-func (g *BaseGrid) Size() int {
+// func (g *BaseGrid) GetRandomCell() *Cell {
+
+// 	row := util.CreateRandNum(g.RowLen)
+// 	col := util.CreateRandNum(g.ColLen)
+
+// 	return g.Cells[row][col]
+// }
+
+func (g *BaseGrid) GetSize() int {
 	return g.RowLen * g.ColLen
 }
